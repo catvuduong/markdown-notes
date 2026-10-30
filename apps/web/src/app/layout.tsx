@@ -13,13 +13,19 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "markdown-notes",
-  description: "markdown-notes",
+  title: "Markdown Notes",
+  description: "A markdown notes app that keeps everything in your browser.",
 };
+
+// Runs before first paint so a saved theme never flashes the wrong colours.
+const themeScript = `try{var t=localStorage.getItem('markdown-notes.theme');if(t!=='light'&&t!=='dark'){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.dataset.theme=t}catch(e){}`;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body>{children}</body>
     </html>
   );
